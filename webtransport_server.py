@@ -112,9 +112,11 @@ class CounterHandler:
         if isinstance(event, DatagramReceived):
             payload = str(len(event.data)).encode('ascii')
             self._http.send_datagram(self._session_id, payload)
+            print("+++++ DatagramReceived: ", str(event.data))
 
         if isinstance(event, WebTransportStreamDataReceived):
             self._counters[event.stream_id] += len(event.data)
+            print("+++++ WebTransportStreamDataReceived: ", str(event.data))
             if event.stream_ended:
                 if stream_is_unidirectional(event.stream_id):
                     response_id = self._http.create_webtransport_stream(
